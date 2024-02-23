@@ -17,7 +17,7 @@ jobs:
 
     services:
       flutter:
-        image: cirrusci/flutter:3.16.9
+        image: cirrusci/flutter:stable-3.16.9
         ports:
           - 8080:8080
           - 8081:8081
