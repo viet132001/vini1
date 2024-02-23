@@ -1,0 +1,4 @@
+#Fri Feb 23 22:34:59 ICT 2024
+base.0=/Users/vietnguyen/Documents/app/3.16.9/vini1.github.io/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
