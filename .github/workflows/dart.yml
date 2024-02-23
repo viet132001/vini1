@@ -17,6 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        app: [ios, android, web]
         version:
           - 3.16.9
     steps:
@@ -45,6 +46,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        app: [ios, android, web]
         version:
           - 3.16.9
     steps:
