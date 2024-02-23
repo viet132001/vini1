@@ -1,41 +1,73 @@
-name: Dart CI with Flutter 3.16.9
+name: Flutter
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, v*]
   pull_request:
-    branches:
-      - main
-      - master
-
+    branches: [main, v*]
+  schedule:
+    # https://crontab.guru/#40_10_*_*_*
+    - cron: '40 10 * * *'
+  workflow_dispatch:
+  
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-
+  test-stable:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        version:
+          - latest
+          - 3.3.0
+          - 3.0.0
+          - 2.10.5
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Install Flutter
-      run: |
-        git clone --branch 3.16.9 https://github.com/flutter/flutter.git
-        export PATH="$PATH:`pwd`/flutter/bin"
+      - uses: ./
+        with:
+          channel: stable
+          version: ${{ matrix.version }}
 
-    - name: Verify Flutter installation
-      run: flutter --version
+      - name: Dart version
+        run: dart --version
+      - name: Flutter version
+        run: flutter --version
+      - name: Flutter doctor
+        run: flutter doctor
 
-    - name: Accept Flutter licenses
-      run: flutter doctor --android-licenses
+      - name: Run hello world
+        run: |
+          echo "main() { print('hello world'); }" > hello.dart
+          dart hello.dart
 
-    - name: Run flutter doctor
-      run: flutter doctor -v
+  test-beta:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        version:
+          - latest
+          - 3.3.0-0.0.pre
+          - 3.1.0
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: flutter pub get
+      - uses: ./
+        with:
+          channel: beta
+          version: ${{ matrix.version }}
 
-    - name: Run tests
-    
-      run: flutter test
+      - name: Dart version
+        run: dart --version
+      - name: Flutter version
+        run: flutter --version
+      - name: Flutter doctor
+        run: flutter doctor
+
+      - name: Run hello world
+        run: |
+          echo "main() { print('hello world'); }" > hello.dart
+          dart hello.dart
