@@ -24,7 +24,13 @@ jobs:
         git clone --branch 3.16.9 https://github.com/flutter/flutter.git
         export PATH="$PATH:`pwd`/flutter/bin"
 
+    - name: Verify Flutter installation
+      run: flutter --version
+
     - name: Accept Flutter licenses
+      run: flutter doctor --android-licenses
+
+    - name: Run flutter doctor
       run: flutter doctor -v
 
     - name: Install dependencies
